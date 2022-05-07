@@ -1,0 +1,204 @@
+openapi: 3.0.3
+info:
+  description: Markdown site用API
+  title: Markdown site
+  version: 1.0.0
+servers:
+- url: https://localhost:8080/api/v1
+tags:
+- description: ユーザー関係
+  name: user
+- description: 認証関係
+  name: auth
+paths:
+  /login:
+    post:
+      description: ログイン
+      operationId: login
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/loginRequest'
+        required: true
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/loginResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "419":
+          description: Page Expired
+        "500":
+          description: Internal Server Error
+      summary: ログイン
+      tags:
+      - auth
+  /register:
+    post:
+      description: ユーザー情報を新規登録
+      operationId: createMe
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/createMeRequest'
+        required: true
+      responses:
+        "201":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/createMeResponse'
+          description: Created
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "419":
+          description: Page Expired
+        "500":
+          description: Internal Server Error
+      summary: ユーザー情報登録
+      tags:
+      - user
+  /csrf:
+    get:
+      description: csrfトークンを取得
+      operationId: getCsrfToken
+      responses:
+        "200":
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/getCsrfTokenResponse'
+          description: OK
+        "400":
+          description: Bad Request
+        "401":
+          description: Unauthorized
+        "500":
+          description: Internal Server Error
+      summary: csrfトークン取得
+      tags:
+      - auth
+components:
+  schemas:
+    loginRequest:
+      description: ログイン情報
+      properties:
+        email:
+          description: メールアドレス
+          format: email
+          maxLength: 255
+          minLength: 1
+          type: string
+        password:
+          description: パスワード
+          minLength: 8
+          pattern: ^[a-zA-Z0-9.?/-]{8,}$
+          type: string
+        csrf:
+          description: csrfトークン
+          type: string
+      required:
+      - email
+      - password
+      type: object
+    loginResponse:
+      description: ユーザー情報
+      example:
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        email: email
+      properties:
+        id:
+          description: ID
+          format: uuid
+          type: string
+        name:
+          description: ユーザーネーム
+          maxLength: 32
+          minLength: 1
+          type: string
+        email:
+          description: メールアドレス
+          format: email
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - email
+      - id
+      - name
+      type: object
+    createMeRequest:
+      description: 初期登録時のユーザー情報
+      properties:
+        name:
+          description: ユーザーネーム
+          maxLength: 32
+          minLength: 1
+          type: string
+        email:
+          description: メールアドレス
+          format: email
+          maxLength: 255
+          minLength: 1
+          type: string
+        password:
+          description: パスワード
+          minLength: 8
+          pattern: ^[a-zA-Z0-9.?/-]{8,}$
+          type: string
+        csrf:
+          description: csrfトークン
+          type: string
+      required:
+      - email
+      - name
+      - password
+      type: object
+    createMeResponse:
+      description: ユーザー情報
+      example:
+        name: name
+        id: 046b6c7f-0b8a-43b9-b35d-6489e6daee91
+        email: email
+      properties:
+        id:
+          description: ID
+          format: uuid
+          type: string
+        name:
+          description: ユーザーネーム
+          maxLength: 32
+          minLength: 1
+          type: string
+        email:
+          description: メールアドレス
+          format: email
+          maxLength: 255
+          minLength: 1
+          type: string
+      required:
+      - email
+      - id
+      - name
+      type: object
+    getCsrfTokenResponse:
+      description: csrfトークン
+      example:
+        token: token
+      properties:
+        token:
+          description: csrfトークン
+          type: string
+      required:
+      - token
+      type: object
