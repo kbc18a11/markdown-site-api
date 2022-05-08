@@ -1,7 +1,10 @@
-package models
+package schemas
 
-// LoginRequest - ログイン情報
-type LoginRequest struct {
+// CreateMeRequest - 初期登録時のユーザー情報
+type CreateMeRequest struct {
+
+	// ユーザーネーム
+	Name string `json:"name"`
 
 	// メールアドレス
 	Email string `json:"email"`

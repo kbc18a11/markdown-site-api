@@ -1,4 +1,4 @@
-package models
+package schemas
 
 // CreateMeResponse - ユーザー情報
 type CreateMeResponse struct {

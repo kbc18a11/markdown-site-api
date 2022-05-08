@@ -1,4 +1,4 @@
-package models
+package schemas
 
 // HelloWorld is a sample data structure to make sure each endpoint return something.
 type HelloWorld struct {
