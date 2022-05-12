@@ -12,7 +12,7 @@ func main() {
 	// ミドルウェアの設定
 	config.InitMiddlewares(e)
 
-	e.GET("/api/csrf", controller.GetCsrfToken)
+	e.GET("/api/v1/csrf", controller.GetCsrfToken)
 
 	// Start server
 	e.Logger.Fatal(e.Start(":8080"))
