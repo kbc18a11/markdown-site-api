@@ -26,17 +26,24 @@ func createCsrfToken() string {
 	return string(csrfToken)
 }
 
+/*
+CSRFトークンの取得
+*/
 func GetCsrfToken(c echo.Context) error {
+	// CSRFトークンの生成
+	csrfToken := createCsrfToken()
+
+	// CSRFトークンをセッションに保存
 	sess, _ := session.Get("session", c)
 	sess.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   14400, // 4時間
 		HttpOnly: true,
 	}
-	sess.Values["csrf"] = createCsrfToken()
+	sess.Values["csrf"] = csrfToken
 	sess.Save(c.Request(), c.Response())
 
 	return c.JSON(http.StatusOK, schemas.GetCsrfTokenResponse{
-		Token: "sss",
+		Token: csrfToken,
 	})
 }
