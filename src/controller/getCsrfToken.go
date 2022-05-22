@@ -4,7 +4,7 @@ import (
 	"math/rand"
 	"net/http"
 
-	"github.com/GIT_USER_ID/GIT_REPO_ID/schemas"
+	"github.com/GIT_USER_ID/GIT_REPO_ID/src/schemas"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"

@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/GIT_USER_ID/GIT_REPO_ID/config"
-	"github.com/GIT_USER_ID/GIT_REPO_ID/controller"
+	"github.com/GIT_USER_ID/GIT_REPO_ID/src/config"
+	"github.com/GIT_USER_ID/GIT_REPO_ID/src/controller"
 	"github.com/labstack/echo/v4"
 )
 
