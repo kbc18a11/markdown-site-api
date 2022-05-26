@@ -8,6 +8,7 @@ import (
 
 	"github.com/GIT_USER_ID/GIT_REPO_ID/src/controller"
 	"github.com/labstack/echo/v4"
+	"github.com/stretchr/testify/assert"
 )
 
 /*
@@ -21,7 +22,6 @@ func TestResponse(t *testing.T) {
 	c := server.NewContext(request, responseRecorder)
 	c.SetPath("/api/v1/csrf")
 
-	if err := controller.GetCsrfToken(c); err != nil {
-		t.Fatal(err)
+	if assert.NoError(t, controller.GetCsrfToken(c)) {
 	}
 }
