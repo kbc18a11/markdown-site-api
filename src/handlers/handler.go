@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/GIT_USER_ID/GIT_REPO_ID/src/modules"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
@@ -19,12 +20,16 @@ type Handler struct {
 		セッション状態を保存
 	*/
 	SaveSession func(session *sessions.Session, c echo.Context)
+
+	csrf modules.Csrf
 }
 
 /*
 初期化処理
 */
 func (handler *Handler) Init() {
+	handler.csrf.Init()
+
 	// セッション取得処理を初期化
 	handler.GetSession = func(c echo.Context) (*sessions.Session, error) {
 		return session.Get("session", c)
