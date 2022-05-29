@@ -1,4 +1,4 @@
-package controller
+package handlers
 
 import (
 	"math/rand"
@@ -6,14 +6,13 @@ import (
 
 	"github.com/GIT_USER_ID/GIT_REPO_ID/src/schemas"
 	"github.com/gorilla/sessions"
-	"github.com/labstack/echo-contrib/session"
 	"github.com/labstack/echo/v4"
 )
 
 /*
 CSRFトークンの作成
 */
-func createCsrfToken() string {
+func (handler *Handler) createCsrfToken() string {
 	// トークに割り当てられる文字列
 	tokenParts := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
@@ -29,19 +28,21 @@ func createCsrfToken() string {
 /*
 CSRFトークンの取得
 */
-func GetCsrfToken(c echo.Context) error {
+func (handler *Handler) GetCsrfToken(c echo.Context) error {
 	// CSRFトークンの生成
-	csrfToken := createCsrfToken()
+	csrfToken := handler.createCsrfToken()
 
-	// CSRFトークンをセッションに保存
-	sess, _ := session.Get("session", c)
-	sess.Options = &sessions.Options{
+	// CSRFトークンをセッションに保存するために、セッションの設定
+	session, _ := handler.GetSession(c)
+	session.Options = &sessions.Options{
 		Path:     "/",
 		MaxAge:   14400, // 4時間
 		HttpOnly: true,
 	}
-	sess.Values["csrf"] = csrfToken
-	sess.Save(c.Request(), c.Response())
+	session.Values["csrf"] = csrfToken
+
+	// CSRFトークンをセッションに保存
+	handler.SaveSession(session, c)
 
 	return c.JSON(http.StatusOK, schemas.GetCsrfTokenResponse{
 		Token: csrfToken,

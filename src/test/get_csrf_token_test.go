@@ -6,31 +6,28 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/GIT_USER_ID/GIT_REPO_ID/src/controller"
+	"github.com/GIT_USER_ID/GIT_REPO_ID/src/handlers"
 	"github.com/gorilla/sessions"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/mock"
 )
 
-/*
-セッションライブラリのモック
-*/
-type MockSession struct {
-	mock.Mock
-}
+func HandlerMockInit() *handlers.Handler {
+	handler := &handlers.Handler{}
 
-/*
-セッションインスタンスの取得関数のモック化
-*/
-func (mock *MockSession) Get(name string, c echo.Context) (*sessions.Session, error) {
-	return &sessions.Session{
-			ID:      "",
-			Values:  nil,
-			Options: nil,
-			IsNew:   true,
-		},
-		nil
+	// セッション取得処理をモック化
+	handler.GetSession = func(c echo.Context) (*sessions.Session, error) {
+		session := &sessions.Session{
+			Values: map[interface{}]interface{}{},
+		}
+
+		return session, nil
+	}
+
+	// セッション状態の保存処理をモック化
+	handler.SaveSession = func(session *sessions.Session, c echo.Context) {}
+
+	return handler
 }
 
 /*
@@ -44,7 +41,9 @@ func TestResponse(t *testing.T) {
 	c := e.NewContext(request, responseRecorder)
 	c.SetPath("/api/v1/csrf")
 
+	handlerMock := HandlerMockInit()
+
 	// sessionライブラリをモック化しないとヌルポが起きる
-	if assert.NoError(t, controller.GetCsrfToken(c)) {
+	if assert.NoError(t, handlerMock.GetCsrfToken(c)) {
 	}
 }
