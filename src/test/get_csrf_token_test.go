@@ -15,6 +15,8 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var csrfToken = "token"
+
 /*
 APIの処理を初期化
 */
@@ -33,6 +35,10 @@ func HandlerMockInit() *handlers.Handler {
 
 	// セッション状態の保存処理をモック化
 	handler.SaveSession = func(session *sessions.Session, c echo.Context) {}
+
+	handler.Csrf.CreateCsrfToken = func() string {
+		return csrfToken
+	}
 
 	return handler
 }
@@ -58,6 +64,10 @@ func TestResponse(t *testing.T) {
 
 		// レスポンスボディの構造体化
 		var responseBody schemas.GetCsrfTokenResponse
-		json.Unmarshal([]byte(responseRecorder.Body.String()), &responseBody)
+		json.Unmarshal([]byte(responseRecorder.Body.Bytes()), &responseBody)
+
+		assert.Equal(t, responseBody, schemas.GetCsrfTokenResponse{
+			Token: csrfToken,
+		})
 	}
 }

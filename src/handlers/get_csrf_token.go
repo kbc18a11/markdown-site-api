@@ -13,7 +13,7 @@ CSRFトークンの取得
 */
 func (handler *Handler) GetCsrfToken(c echo.Context) error {
 	// CSRFトークンの生成
-	csrfToken := handler.csrf.CreateCsrfToken()
+	csrfToken := handler.Csrf.CreateCsrfToken()
 
 	// CSRFトークンをセッションに保存するために、セッションの設定
 	session, _ := handler.GetSession(c)

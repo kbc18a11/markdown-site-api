@@ -21,14 +21,14 @@ type Handler struct {
 	*/
 	SaveSession func(session *sessions.Session, c echo.Context)
 
-	csrf modules.Csrf
+	Csrf modules.Csrf
 }
 
 /*
 初期化処理
 */
 func (handler *Handler) Init() {
-	handler.csrf.Init()
+	handler.Csrf.Init()
 
 	// セッション取得処理を初期化
 	handler.GetSession = func(c echo.Context) (*sessions.Session, error) {
