@@ -2,7 +2,6 @@ package test
 
 import (
 	"encoding/json"
-	"fmt"
 	"net/http"
 	"net/http/httptest"
 	"strings"
@@ -55,11 +54,8 @@ func TestResponse(t *testing.T) {
 	c := e.NewContext(request, responseRecorder)
 	c.SetPath("/api/v1/csrf")
 
-	handlerMock := HandlerMockInit()
-
-	fmt.Println(responseRecorder.Body)
-	// sessionライブラリをモック化しないとヌルポが起きる
-	if assert.NoError(t, handlerMock.GetCsrfToken(c)) {
+	// 検証
+	if assert.NoError(t, HandlerMockInit().GetCsrfToken(c)) {
 		assert.Equal(t, http.StatusOK, responseRecorder.Code)
 
 		// レスポンスボディの構造体化
