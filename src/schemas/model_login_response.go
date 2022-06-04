@@ -1,4 +1,4 @@
-package models
+package schemas
 
 // LoginResponse - ユーザー情報
 type LoginResponse struct {

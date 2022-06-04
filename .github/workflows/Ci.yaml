@@ -1,0 +1,27 @@
+name: CI
+
+on: pull_request
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.17.1
+      - name: Go Install
+        run: go install ./src
+      - name: Build Go
+        run: go build ./src/main.go
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.17.1
+      - name: Go Install
+        run: go install ./src
+      - name: Test Go
+        run: go test ./src/test
